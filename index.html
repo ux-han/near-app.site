@@ -1,0 +1,1102 @@
+<title>near.</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Archivo:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#FBFAF5;
+    --ink:#171512;
+    --ink-72:rgba(23,21,18,.72);
+    --ink-48:rgba(23,21,18,.48);
+    --ink-28:rgba(23,21,18,.28);
+    --ink-14:rgba(23,21,18,.14);
+    --ink-07:rgba(23,21,18,.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#17150F;
+      --ink:#F4F0E6;
+      --ink-72:rgba(244,240,230,.72);
+      --ink-48:rgba(244,240,230,.48);
+      --ink-28:rgba(244,240,230,.28);
+      --ink-14:rgba(244,240,230,.14);
+      --ink-07:rgba(244,240,230,.07);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#17150F;
+    --ink:#F4F0E6;
+    --ink-72:rgba(244,240,230,.72);
+    --ink-48:rgba(244,240,230,.48);
+    --ink-28:rgba(244,240,230,.28);
+    --ink-14:rgba(244,240,230,.14);
+    --ink-07:rgba(244,240,230,.07);
+    color-scheme:dark;
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'EB Garamond',Georgia,serif;
+    font-size:17px;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--ink); color:var(--paper); }
+  button:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+
+  .wrap{
+    max-width:1140px;
+    margin-inline:auto;
+    padding-inline:clamp(20px,4.5vw,48px);
+  }
+
+  /* ---- system type: what the app measured ---- */
+  .label{
+    font-family:Archivo,system-ui,sans-serif;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-48);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---- wordmark: the period is you ---- */
+  .wordmark{
+    font-family:'EB Garamond',Georgia,serif;
+    font-weight:400;
+    color:var(--ink);
+    letter-spacing:.005em;
+  }
+  .dot{ position:relative; display:inline-block; }
+  .dot::after{
+    content:"";
+    position:absolute;
+    left:50%; bottom:.09em;
+    width:.16em; height:.16em;
+    border:1px solid var(--ink);
+    border-radius:50%;
+    transform:translate(-50%,50%) scale(.6);
+    opacity:0;
+    animation:logobreath 4s ease-out infinite;
+    pointer-events:none;
+  }
+  @keyframes logobreath{
+    0%{ transform:translate(-50%,50%) scale(.6); opacity:.5; }
+    70%{ opacity:.12; }
+    100%{ transform:translate(-50%,50%) scale(4); opacity:0; }
+  }
+
+  /* ---- nav ---- */
+  .nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding-block:28px 0;
+  }
+  .nav .wordmark{ font-size:27px; }
+
+  /* ---- hero: one enormous question, and the product floating beneath it ---- */
+  .hero{ padding-top:clamp(36px,7vh,84px); }
+  .hero .intro{ text-align:center; }
+  .hero .giant{
+    font-size:12.6vw;
+    font-weight:400;
+    line-height:.96;
+    letter-spacing:-.01em;
+    white-space:nowrap;
+    text-align:center;
+    margin:20px 0 0;
+    padding-inline:1vw;
+    position:relative;
+    z-index:2;
+  }
+  .hero .giant .dot::after{ border-width:1.5px; }
+  .hero .lede{
+    max-width:60ch;
+    margin:26px auto 0;
+    font-size:18px;
+    line-height:1.5;
+    color:var(--ink-72);
+    padding-inline:20px;
+    position:relative;
+    z-index:2;
+  }
+  .hero .lede em{ color:var(--ink); }
+
+  [data-rise]{
+    animation:rise .8s cubic-bezier(.22,1,.36,1) both;
+    animation-delay:var(--d,0s);
+  }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(.5em); }
+    to{ opacity:1; transform:none; }
+  }
+
+  /* ---- the field: scraps of the product, drifting ---- */
+  .field{
+    position:relative;
+    height:clamp(560px,82vh,860px);
+    margin-top:clamp(-18px,-1.5vw,-8px);
+    z-index:1;
+  }
+  .piece{
+    position:absolute;
+    transform:translate3d(calc(var(--mx,0px) * var(--z,.6)),
+                          calc(var(--my,0px) * var(--z,.6) + var(--sy,0px) * (1 - var(--z,.6)) * -.22),
+                          0);
+    will-change:transform;
+  }
+  .tilt{ transform:rotate(var(--r,0deg)); }
+  .paperbit{
+    background:var(--paper);
+    border:1px solid var(--ink-14);
+    padding:16px 18px;
+  }
+  .p-map{ left:calc(50% - clamp(150px,19vw,215px)); top:5%; width:clamp(300px,38vw,430px); z-index:3; }
+  .p-map .tilt{ border:1px solid var(--ink-14); background:var(--paper); padding:10px; }
+  .p-card{ left:4%; top:11%; width:248px; z-index:4; }
+  .p-post1{ right:4.5%; top:5%; width:236px; z-index:4; }
+  .p-chat{ right:8%; top:61%; width:224px; z-index:2; }
+  .p-post2{ left:10%; top:66%; width:216px; z-index:2; opacity:.55; }
+  .p-place{ left:32%; top:85%; z-index:2; opacity:.8; }
+  .p-event{ right:27%; top:88%; z-index:2; opacity:.7; }
+
+  .pname{ font-size:23px; line-height:1.15; margin:0 0 3px; }
+  .pmeta{ margin:0; }
+  .prule{ height:1px; background:var(--ink-14); margin:13px 0 10px; }
+  .pnow{ margin:0; font-style:italic; font-size:16.5px; line-height:1.4; }
+  .ptext{ margin:0 0 12px; font-size:17px; line-height:1.45; }
+  .pattr{ margin:0; }
+  .chatlabel{ display:block; margin-bottom:12px; }
+  .bubble{ margin:0 0 8px; font-size:16px; line-height:1.35; }
+  .bubble.me{
+    background:var(--ink);
+    color:var(--paper);
+    display:inline-block;
+    padding:7px 12px;
+  }
+  .bubble.them{
+    border-left:1px solid var(--ink-28);
+    padding-left:11px;
+    color:var(--ink-72);
+    margin-bottom:0;
+  }
+  .markline{ display:flex; align-items:center; gap:9px; margin:0; }
+  .sqr{
+    width:9px; height:9px;
+    border:1px solid var(--ink);
+    display:inline-block;
+    flex:none;
+  }
+  .dia{
+    width:9px; height:9px;
+    border:1px solid var(--ink);
+    display:inline-block;
+    flex:none;
+    transform:rotate(45deg);
+  }
+  .markline .label{ color:var(--ink); }
+  .marksub{ margin:5px 0 0 18px; }
+
+  /* ---- pattern tiles: scraps of cartography ---- */
+  .patternbit{
+    border:1px solid var(--ink-14);
+    background:var(--paper);
+    display:block;
+  }
+  .patternbit svg{ display:block; width:100%; height:auto; }
+  .p-tile1{ left:21%; top:2%; width:118px; z-index:2; }
+  .p-tile2{ right:3%; top:37%; width:114px; z-index:2; }
+  .p-tile3{ left:2.5%; top:46%; width:134px; z-index:2; }
+  .p-tile4{ right:38%; top:85%; width:142px; z-index:1; }
+
+  /* ---- four marks: the whole legend, drawn large ---- */
+  .marks .mintro{
+    max-width:46ch;
+    font-size:18px;
+    color:var(--ink-72);
+    margin:22px 0 0;
+  }
+  .marks .grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:1px;
+    background:var(--ink-14);
+    border:1px solid var(--ink-14);
+    margin-top:36px;
+  }
+  .marks .cell{
+    background:var(--paper);
+    padding:34px 22px 28px;
+    text-align:center;
+  }
+  .marks .cell svg{ display:block; margin:0 auto 16px; width:84px; height:84px; }
+  .marks .cell .label{ color:var(--ink); }
+  .marks .cnote{
+    margin:9px 0 0;
+    font-style:italic;
+    font-size:15.5px;
+    line-height:1.4;
+    color:var(--ink-48);
+  }
+
+  .ornament{ margin:42px 0 0; display:block; color:var(--ink); }
+
+  @media (prefers-reduced-motion: no-preference){
+    .float{ animation:floaty var(--fd,8s) ease-in-out var(--fdel,0s) infinite alternate; }
+    @keyframes floaty{
+      from{ transform:translateY(-5px); }
+      to{ transform:translateY(7px); }
+    }
+    .piece{
+      opacity:0;
+      animation:mfade .7s ease forwards;
+      animation-delay:var(--pd,.6s);
+    }
+    .p-post2{ animation-name:mfade55; }
+    .p-place{ animation-name:mfade80; }
+    .p-event{ animation-name:mfade70; }
+    @keyframes mfade55{ to{ opacity:.55; } }
+    @keyframes mfade80{ to{ opacity:.8; } }
+    @keyframes mfade70{ to{ opacity:.7; } }
+    .heromap .st{
+      stroke-dasharray:1;
+      stroke-dashoffset:1;
+      animation:draw 1.1s cubic-bezier(.22,1,.36,1) forwards;
+      animation-delay:var(--sd,0s);
+    }
+    .heromap .wtr{
+      opacity:0;
+      animation:mfade .8s ease forwards;
+      animation-delay:1.4s;
+    }
+    .heromap .m{
+      opacity:0;
+      animation:mfade .5s ease forwards;
+      animation-delay:var(--md,0s);
+    }
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes mfade{ to{ opacity:1; } }
+
+  /* ---- maps ---- */
+  .map{ display:block; width:100%; height:auto; }
+  .map .sys{
+    font-family:Archivo,system-ui,sans-serif;
+    letter-spacing:.08em;
+    font-variant-numeric:tabular-nums;
+  }
+  .map .note{ font-family:'EB Garamond',Georgia,serif; font-style:italic; }
+  .breath{
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:breath 4s ease-out infinite;
+  }
+  @keyframes breath{
+    0%{ transform:scale(.28); opacity:.45; }
+    70%{ opacity:.1; }
+    100%{ transform:scale(1); opacity:0; }
+  }
+
+  /* ---- sections ---- */
+  .section{ padding-block:clamp(64px,11vh,128px); }
+  .rule{
+    height:1px;
+    background:var(--ink-14);
+    transform-origin:left;
+  }
+
+  /* ---- what it isn't: lines get struck through in ink ---- */
+  .nots h2{
+    font-size:clamp(1.9rem,4.4vw,3.3rem);
+    font-weight:400;
+    line-height:1.18;
+    margin:26px 0 0;
+    letter-spacing:-.005em;
+  }
+  .nots h2 span{ display:block; }
+  .nots .txt{ position:relative; display:inline-block; }
+  .nots .txt::after{
+    content:"";
+    position:absolute;
+    left:-1%; right:-1%; top:55%;
+    height:1px;
+    background:var(--ink-28);
+    transform:scaleX(0);
+    transform-origin:left;
+  }
+  .nots h2 span.in .txt::after{
+    transform:scaleX(1);
+    transition:transform .8s cubic-bezier(.22,1,.36,1) calc(var(--d,0s) + .55s);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .nots .txt::after{ transform:scaleX(1); }
+  }
+  .nots .overlap{
+    max-width:44ch;
+    margin:clamp(32px,5vw,56px) 0 0 auto;
+    font-size:18px;
+    line-height:1.5;
+    color:var(--ink-72);
+  }
+  .nots .overlap em{ color:var(--ink); }
+
+  /* ---- the ring: scroll grows the circle through the three distances ---- */
+  .ringscene{ position:relative; }
+  .pin{
+    display:grid;
+    grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+    gap:clamp(24px,4vw,64px);
+    align-items:center;
+    padding-block:clamp(48px,8vh,96px);
+  }
+  .scenemap{ width:100%; max-width:640px; justify-self:center; }
+  .dintro{
+    max-width:42ch;
+    font-size:18px;
+    color:var(--ink-72);
+    margin:22px 0 40px;
+  }
+  .dblocks{ display:grid; gap:0; }
+  .dblock{ padding-block:24px; border-top:1px solid var(--ink-14); }
+  .dblock:last-child{ border-bottom:1px solid var(--ink-14); }
+  .dblock .what{
+    margin:12px 0 6px;
+    font-size:19px;
+    line-height:1.45;
+    color:var(--ink-72);
+    max-width:46ch;
+  }
+  .dblock .means{ font-style:italic; color:var(--ink-48); font-size:16px; }
+  .keeps{
+    margin:0;
+    padding-bottom:clamp(56px,9vh,110px);
+    font-style:italic;
+    font-size:19px;
+    color:var(--ink-48);
+    text-align:center;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .js .ringscene{ height:330vh; }
+    .js .pin{
+      position:sticky;
+      top:0;
+      height:100svh;
+      box-sizing:border-box;
+      overflow:hidden;
+    }
+    .js .scenemap{ max-width:min(640px,84svh); }
+    .js .dblocks{ grid-template-columns:1fr; }
+    .js .dblock{
+      grid-area:1/1;
+      border:0;
+      padding-block:0;
+      opacity:0;
+      transform:translateY(.4em);
+      transition:opacity .5s cubic-bezier(.22,1,.36,1), transform .5s cubic-bezier(.22,1,.36,1);
+    }
+    .js .dblock.active{ opacity:1; transform:none; }
+  }
+
+  /* ---- the first move: an interactive card ---- */
+  .wave h2{
+    font-size:clamp(1.9rem,4.4vw,3.3rem);
+    font-weight:400;
+    line-height:1.14;
+    letter-spacing:-.005em;
+    margin:26px 0 clamp(36px,5vw,56px);
+    text-wrap:balance;
+    max-width:24ch;
+  }
+  .wave .cols{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,380px);
+    gap:clamp(32px,6vw,96px);
+    align-items:start;
+  }
+  .wave .colstext{ display:grid; gap:36px; }
+  .wave .colstext p{ margin:0; font-size:18px; line-height:1.55; color:var(--ink-72); max-width:48ch; }
+  .wave .collabel{ display:block; margin-bottom:12px; }
+  .wave .colstext em{ color:var(--ink); }
+
+  .card{
+    border:1px solid var(--ink-14);
+    padding:30px 30px 26px;
+    background:var(--paper);
+    transition:opacity .4s ease;
+  }
+  .card.dim{ opacity:.45; }
+  .card-name{
+    font-size:26px;
+    line-height:1.15;
+    margin:14px 0 4px;
+  }
+  .card-meta{ color:var(--ink-48); }
+  .card-ints{ margin:14px 0 0; font-size:16px; color:var(--ink-72); }
+  .card-rule{ height:1px; background:var(--ink-14); margin:20px 0 14px; }
+  .card-now{ margin:0 0 24px; font-style:italic; font-size:18px; line-height:1.45; }
+  .card-actions{ display:flex; align-items:center; gap:22px; }
+  .wavebtn{
+    font-family:Archivo,system-ui,sans-serif;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background-color:transparent;
+    background-image:linear-gradient(var(--ink),var(--ink));
+    background-size:100% 100%;
+    background-position:center;
+    background-repeat:no-repeat;
+    border:1px solid var(--ink);
+    padding:11px 26px;
+    cursor:pointer;
+    transition:background-size .4s ease, color .15s ease .18s;
+  }
+  .wavebtn.sent{
+    background-size:100% 0%;
+    color:var(--ink);
+    cursor:default;
+  }
+  .notnow{
+    font-family:Archivo,system-ui,sans-serif;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-48);
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+  }
+  .notnow:hover{ color:var(--ink); }
+  .card-note{
+    margin:18px 0 0;
+    min-height:3em;
+    font-style:italic;
+    font-size:15.5px;
+    line-height:1.45;
+    color:var(--ink-48);
+  }
+
+  /* ---- footer: the tagline arrives a word at a time ---- */
+  .footer{ padding-block:clamp(56px,9vh,104px) 56px; }
+  .footer .tagline{
+    font-size:clamp(1.9rem,4.6vw,3.4rem);
+    font-style:italic;
+    line-height:1.15;
+    margin:40px 0 0;
+    text-wrap:balance;
+  }
+  .footer .tagline .w{
+    opacity:clamp(0, calc((var(--hl,1) - var(--i) * .13) / .3), 1);
+  }
+  .footer .end{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-top:clamp(48px,7vw,88px);
+  }
+  .footer .wordmark{ font-size:34px; }
+
+  /* ---- scroll reveals ---- */
+  .pre{ opacity:0; transform:translateY(.5em); }
+  .pre.in{
+    opacity:1; transform:none;
+    transition:opacity .72s cubic-bezier(.22,1,.36,1) var(--d,0s),
+               transform .72s cubic-bezier(.22,1,.36,1) var(--d,0s);
+  }
+  .rule.pre{ opacity:1; transform:scaleX(0); }
+  .rule.pre.in{ transform:scaleX(1); transition:transform 1.1s cubic-bezier(.22,1,.36,1); }
+
+  @media (max-width:820px){
+    .pin{ grid-template-columns:1fr; gap:20px; align-content:center; }
+    .scenemap{ max-width:420px; }
+    .js .scenemap{ max-width:min(420px,46svh); }
+  }
+  @media (max-width:760px){
+    .hero .giant{ font-size:13vw; }
+    .field{ height:620px; }
+    .p-map{ width:min(76vw,360px); left:calc(50% - min(38vw,180px)); top:3%; }
+    .p-card{ left:3%; top:56%; width:218px; }
+    .p-post1{ right:3%; top:47%; width:200px; }
+    .p-chat{ right:5%; top:78%; width:204px; }
+    .p-post2, .p-place, .p-event, .p-tile1, .p-tile2, .p-tile3, .p-tile4{ display:none; }
+    .marks .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .wave .cols{ grid-template-columns:1fr; }
+    .footer .end{ flex-direction:column; gap:20px; align-items:flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    [data-rise]{ animation:none; }
+    .breath{ animation:none; opacity:0; }
+    .dot::after{ animation:none; opacity:0; }
+    .pre{ opacity:1; transform:none; }
+    .rule.pre{ transform:none; }
+    .wavebtn{ transition:none; }
+    .card{ transition:none; }
+    .piece{ transform:none; }
+  }
+</style>
+
+<header class="nav wrap">
+  <span class="wordmark">near<span class="dot">.</span></span>
+  <span class="label">The physical world</span>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="intro">
+      <span class="label" data-rise style="--d:.05s">A social layer for the physical world</span>
+      <h1 class="giant" data-rise style="--d:.14s">Who&rsquo;s around<span class="dot">.</span></h1>
+      <p class="lede" data-rise style="--d:.32s">The question no other app answers: <em>who is around me right now, and would any of them want to meet?</em> Open near and you're looking at where you are — the people who are open, the places around you, what's on tonight, and the notes people left where they wrote them.</p>
+    </div>
+
+    <div class="field" id="field">
+      <!-- the map, a scrap of the city -->
+      <div class="piece p-map" style="--z:1; --r:-2.2deg; --fd:10s; --pd:.5s">
+        <div class="float" style="--fdel:-3s"><div class="tilt">
+          <svg class="map heromap" viewBox="0 0 640 640" role="img" aria-label="A hand-drawn map in a single ink: a filled dot marks you, rings mark people who are open at nearby venues, squares mark places, a diamond marks an event. Everything fades with distance.">
+            <defs>
+              <radialGradient id="fade" cx="50.3%" cy="51%" r="52%">
+                <stop offset="0" stop-color="#fff"/>
+                <stop offset=".52" stop-color="#fff"/>
+                <stop offset=".82" stop-color="#fff" stop-opacity=".3"/>
+                <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="ring"><rect width="640" height="640" fill="url(#fade)"/></mask>
+            </defs>
+            <g mask="url(#ring)" stroke-linecap="round">
+              <g fill="none" stroke="var(--ink)" stroke-opacity=".14" stroke-width="1">
+                <path class="st" pathLength="1" style="--sd:.5s" d="M-20 318 C 180 306, 420 330, 660 302"/>
+                <path class="st" pathLength="1" style="--sd:.6s" d="M372 -20 C 360 200, 386 440, 368 660"/>
+                <path class="st" pathLength="1" style="--sd:.7s" d="M-20 214 C 120 202, 300 232, 660 196"/>
+                <path class="st" pathLength="1" style="--sd:.78s" d="M156 -20 C 168 180, 142 420, 170 660"/>
+                <path class="st" pathLength="1" style="--sd:.86s" d="M-20 430 C 170 412, 430 448, 660 414"/>
+                <path class="st" pathLength="1" style="--sd:.94s" d="M528 -20 C 516 210, 544 430, 526 660"/>
+                <path class="st" pathLength="1" style="--sd:1.02s" d="M-20 558 C 210 486, 430 396, 660 338"/>
+                <path class="st" pathLength="1" style="--sd:1.1s" d="M48 -20 C 66 160, 34 420, 58 660"/>
+              </g>
+              <g class="wtr" fill="none" stroke="var(--ink)" stroke-opacity=".07" stroke-width="1">
+                <path d="M-10 578 C 50 570, 100 582, 160 574"/>
+                <path d="M-20 600 C 60 588, 120 604, 200 592"/>
+                <path d="M-20 622 C 70 610, 130 626, 210 614"/>
+              </g>
+              <g class="m" style="--md:.7s">
+                <circle class="breath" cx="322" cy="328" r="26" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+                <circle cx="322" cy="328" r="5.5" fill="var(--ink)"/>
+              </g>
+              <g class="m" style="--md:.9s">
+                <g stroke="var(--ink)" stroke-opacity=".8" fill="none" stroke-width="1.1">
+                  <rect x="231" y="271" width="10" height="10"/>
+                  <circle cx="236" cy="276" r="10"/>
+                  <circle cx="236" cy="276" r="14.5"/>
+                </g>
+                <circle cx="243.5" cy="268.5" r="1.8" fill="var(--ink)" fill-opacity=".6"/>
+                <text class="sys" x="236" y="246" text-anchor="middle" font-size="11" fill="var(--ink)" fill-opacity=".8">CAFÉ ORO</text>
+                <text class="sys" x="236" y="230" text-anchor="middle" font-size="10" fill="var(--ink)" fill-opacity=".48">80 M</text>
+                <text class="note" x="236" y="312" text-anchor="middle" font-size="12" fill="var(--ink)" fill-opacity=".48">usually busy on weekday mornings</text>
+              </g>
+              <g class="m" style="--md:1.05s">
+                <g stroke="var(--ink)" stroke-opacity=".48" fill="none" stroke-width="1">
+                  <rect x="425" y="227" width="10" height="10"/>
+                  <circle cx="430" cy="232" r="10"/>
+                  <rect x="465" y="415" width="10" height="10"/>
+                </g>
+                <circle cx="477.5" cy="412.5" r="1.6" fill="var(--ink)" fill-opacity=".4"/>
+                <path d="M204 444 L211 452 L204 460 L197 452 Z" fill="none" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+              </g>
+              <g class="m" style="--md:1.2s" stroke="var(--ink)" stroke-opacity=".28" fill="none" stroke-width="1">
+                <rect x="145" y="165" width="10" height="10"/>
+                <circle cx="150" cy="170" r="10"/>
+              </g>
+              <g class="m" style="--md:1.35s">
+                <g stroke="var(--ink)" stroke-opacity=".14" fill="none" stroke-width="1">
+                  <rect x="535" y="465" width="10" height="10"/>
+                  <rect x="94" y="505" width="10" height="10"/>
+                </g>
+                <text class="sys" x="540" y="494" text-anchor="middle" font-size="10" fill="var(--ink)" fill-opacity=".28">1.1 KM</text>
+              </g>
+              <!-- the park: stippled, suggested -->
+              <g class="m" style="--md:1.45s" fill="var(--ink)" fill-opacity=".14">
+                <circle cx="496" cy="112" r="1.3"/><circle cx="518" cy="100" r="1.1"/><circle cx="542" cy="116" r="1.3"/>
+                <circle cx="566" cy="104" r="1.1"/><circle cx="586" cy="122" r="1.3"/><circle cx="508" cy="136" r="1.1"/>
+                <circle cx="532" cy="142" r="1.3"/><circle cx="558" cy="134" r="1.1"/><circle cx="580" cy="148" r="1.3"/>
+                <circle cx="520" cy="162" r="1.1"/><circle cx="548" cy="168" r="1.3"/><circle cx="572" cy="174" r="1.1"/>
+              </g>
+            </g>
+            <!-- cartographic furniture -->
+            <g class="m" style="--md:1.55s">
+              <line x1="600" y1="62" x2="600" y2="36" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+              <path d="M596 42 L600 34 L604 42" fill="none" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+              <text class="sys" x="600" y="26" text-anchor="middle" font-size="10" fill="var(--ink)" fill-opacity=".48">N</text>
+              <line x1="504" y1="612" x2="580" y2="612" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+              <line x1="504" y1="608" x2="504" y2="616" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+              <line x1="580" y1="608" x2="580" y2="616" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+              <text class="sys" x="542" y="628" text-anchor="middle" font-size="9" fill="var(--ink)" fill-opacity=".28">100 M</text>
+            </g>
+          </svg>
+        </div></div>
+      </div>
+
+      <!-- a person who is open -->
+      <div class="piece p-card" style="--z:.85; --r:-4.5deg; --fd:8s; --pd:.75s">
+        <div class="float" style="--fdel:-1s"><div class="tilt paperbit">
+          <p class="pname">Jonas</p>
+          <p class="pmeta label">Café Oro · Here</p>
+          <div class="prule"></div>
+          <p class="pnow">sketching the canal — say hi if you know pens</p>
+        </div></div>
+      </div>
+
+      <!-- a fresh post, left where it was written -->
+      <div class="piece p-post1" style="--z:.9; --r:3.6deg; --fd:9s; --pd:.9s">
+        <div class="float" style="--fdel:-5s"><div class="tilt paperbit">
+          <p class="ptext">the window seat gets the morning sun</p>
+          <p class="pattr label">Anna · Café Oro · Tuesday</p>
+        </div></div>
+      </div>
+
+      <!-- after a mutual wave -->
+      <div class="piece p-chat" style="--z:.7; --r:-2.8deg; --fd:11s; --pd:1.05s">
+        <div class="float" style="--fdel:-7s"><div class="tilt paperbit">
+          <span class="chatlabel label">After a mutual wave</span>
+          <p class="bubble me">small table at the back</p>
+          <p class="bubble them">two minutes away</p>
+        </div></div>
+      </div>
+
+      <!-- an older post, weathering -->
+      <div class="piece p-post2" style="--z:.55; --r:2.4deg; --fd:10s; --pd:1.2s">
+        <div class="float" style="--fdel:-2s"><div class="tilt paperbit">
+          <p class="ptext">ask for the quiet room upstairs</p>
+          <p class="pattr label">Sam · The Library · last month</p>
+        </div></div>
+      </div>
+
+      <!-- a place, drawn whether or not anyone's in it -->
+      <div class="piece p-place" style="--z:.6; --r:-1.6deg; --fd:9.5s; --pd:1.3s">
+        <div class="float" style="--fdel:-4s"><div class="tilt paperbit">
+          <p class="markline"><span class="sqr"></span><span class="label">The Library</span></p>
+          <p class="marksub label">400 M</p>
+        </div></div>
+      </div>
+
+      <!-- something on tonight -->
+      <div class="piece p-event" style="--z:.5; --r:2deg; --fd:8.5s; --pd:1.4s">
+        <div class="float" style="--fdel:-6s"><div class="tilt paperbit">
+          <p class="markline"><span class="dia"></span><span class="label">Tonight</span></p>
+          <p class="marksub label">650 M</p>
+        </div></div>
+      </div>
+
+      <!-- cartography scraps -->
+      <div class="piece p-tile1" style="--z:.45; --r:3.4deg; --fd:9s; --pd:1.5s">
+        <div class="float" style="--fdel:-1.5s"><div class="tilt patternbit">
+          <svg viewBox="0 0 120 108" aria-hidden="true">
+            <g fill="none" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1" stroke-linecap="round">
+              <path d="M-4 16 C 16 10, 32 22, 52 16 S 92 10 124 16"/>
+              <path d="M-4 33 C 16 27, 32 39, 52 33 S 92 27 124 33"/>
+              <path d="M-4 50 C 16 44, 32 56, 52 50 S 92 44 124 50"/>
+              <path d="M-4 67 C 16 61, 32 73, 52 67 S 92 61 124 67"/>
+              <path d="M-4 84 C 16 78, 32 90, 52 84 S 92 78 124 84"/>
+            </g>
+            <text x="12" y="102" font-family="Archivo,sans-serif" font-size="8" letter-spacing=".08em" fill="var(--ink)" fill-opacity=".48">CANAL</text>
+          </svg>
+        </div></div>
+      </div>
+
+      <div class="piece p-tile2" style="--z:.6; --r:-2deg; --fd:10.5s; --pd:1.6s">
+        <div class="float" style="--fdel:-8s"><div class="tilt patternbit">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="64" r="40" fill="none" stroke="var(--ink)" stroke-opacity=".14" stroke-width="1"/>
+            <circle cx="60" cy="64" r="2.2" fill="var(--ink)"/>
+            <line x1="60" y1="64" x2="60" y2="30" stroke="var(--ink)" stroke-opacity=".6" stroke-width="1"/>
+            <path d="M56 36 L60 28 L64 36" fill="none" stroke="var(--ink)" stroke-opacity=".6" stroke-width="1"/>
+            <line x1="98" y1="64" x2="104" y2="64" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+            <line x1="16" y1="64" x2="22" y2="64" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+            <line x1="60" y1="102" x2="60" y2="108" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+            <text x="60" y="20" text-anchor="middle" font-family="Archivo,sans-serif" font-size="11" letter-spacing=".08em" fill="var(--ink)" fill-opacity=".72">N</text>
+          </svg>
+        </div></div>
+      </div>
+
+      <div class="piece p-tile3" style="--z:.5; --r:1.8deg; --fd:9.5s; --pd:1.7s">
+        <div class="float" style="--fdel:-3.5s"><div class="tilt patternbit">
+          <svg viewBox="0 0 134 108" aria-hidden="true">
+            <g fill="var(--ink)" fill-opacity=".28">
+              <circle cx="22" cy="22" r="1.4"/><circle cx="44" cy="16" r="1.1"/><circle cx="68" cy="24" r="1.4"/>
+              <circle cx="92" cy="18" r="1.1"/><circle cx="112" cy="28" r="1.4"/><circle cx="32" cy="40" r="1.1"/>
+              <circle cx="58" cy="44" r="1.4"/><circle cx="84" cy="38" r="1.1"/><circle cx="106" cy="48" r="1.4"/>
+              <circle cx="18" cy="58" r="1.4"/><circle cx="44" cy="62" r="1.1"/><circle cx="72" cy="60" r="1.4"/>
+              <circle cx="98" cy="66" r="1.1"/><circle cx="118" cy="60" r="1.1"/><circle cx="30" cy="78" r="1.4"/>
+              <circle cx="56" cy="82" r="1.1"/><circle cx="82" cy="78" r="1.4"/><circle cx="108" cy="84" r="1.1"/>
+            </g>
+            <path d="M8 96 C 40 86, 70 94, 126 84" fill="none" stroke="var(--ink)" stroke-opacity=".14" stroke-width="1" stroke-linecap="round"/>
+            <text x="12" y="14" font-family="Archivo,sans-serif" font-size="8" letter-spacing=".08em" fill="var(--ink)" fill-opacity=".48">THE PARK</text>
+          </svg>
+        </div></div>
+      </div>
+
+      <div class="piece p-tile4" style="--z:.42; --r:-1.4deg; --fd:8.8s; --pd:1.8s">
+        <div class="float" style="--fdel:-5.5s"><div class="tilt patternbit">
+          <svg viewBox="0 0 142 104" aria-hidden="true">
+            <g fill="none" stroke="var(--ink)" stroke-linecap="round" stroke-width="1">
+              <path stroke-opacity=".14" d="M24 52 C 24 34, 52 24, 76 28 C 104 32, 122 44, 118 60 C 114 76, 84 84, 60 80 C 36 76, 24 66, 24 52 Z"/>
+              <path stroke-opacity=".1" d="M38 52 C 38 40, 58 33, 76 36 C 96 39, 108 48, 105 58 C 102 69, 80 74, 62 71 C 46 68, 38 61, 38 52 Z"/>
+              <path stroke-opacity=".07" d="M52 52 C 52 46, 63 42, 75 44 C 88 46, 95 51, 93 57 C 91 63, 77 65, 66 63 C 57 61, 52 57, 52 52 Z"/>
+            </g>
+            <text x="72" y="55" text-anchor="middle" font-family="Archivo,sans-serif" font-size="8" letter-spacing=".08em" fill="var(--ink)" fill-opacity=".28">12 M</text>
+          </svg>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section marks wrap" style="padding-top:clamp(40px,7vh,80px)">
+    <div class="rule" data-reveal></div>
+    <span class="label" data-reveal style="display:block;margin-top:26px">Four marks</span>
+    <p class="mintro" data-reveal>Everything on the map is one of four marks — no pins. The nearer something is, the darker it's drawn.</p>
+    <div class="grid" data-reveal>
+      <div class="cell">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="breath" cx="50" cy="50" r="34" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+          <circle cx="50" cy="50" r="7" fill="var(--ink)"/>
+        </svg>
+        <span class="label">You</span>
+        <p class="cnote">the same dot as the one in the wordmark</p>
+      </div>
+      <div class="cell">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="15" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        </svg>
+        <span class="label">Someone open</span>
+        <p class="cnote">always at a venue, never at a point</p>
+      </div>
+      <div class="cell">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <rect x="37" y="37" width="26" height="26" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+          <circle cx="66" cy="34" r="3" fill="var(--ink)" fill-opacity=".6"/>
+        </svg>
+        <span class="label">A place</span>
+        <p class="cnote">drawn whether or not anyone's in it</p>
+      </div>
+      <div class="cell">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 32 L68 50 L50 68 L32 50 Z" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        </svg>
+        <span class="label">Something on</span>
+        <p class="cnote">what's happening tonight</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section nots wrap" style="padding-top:clamp(40px,7vh,80px)">
+    <div class="rule" data-reveal></div>
+    <span class="label" data-reveal style="display:block;margin-top:26px">What it isn't</span>
+    <h2>
+      <span data-reveal><span class="txt">Not another social network.</span></span>
+      <span data-reveal style="--d:.12s"><span class="txt">Not another dating app.</span></span>
+      <span data-reveal style="--d:.24s"><span class="txt">Not another location app.</span></span>
+    </h2>
+    <p class="overlap" data-reveal style="--d:.2s">It sits where the three overlap, and the promise is the thing none of them offer: <em>there are interesting people around you, and now there's a way to meet them.</em> It isn't trying to replace real-world interaction. It's trying to make it easier to start.</p>
+  </section>
+
+  <div class="wrap"><div class="rule" data-reveal></div></div>
+
+  <section class="ringscene" id="ringscene">
+    <div class="pin wrap">
+      <div>
+        <span class="label">Three distances</span>
+        <p class="dintro">The whole product is organised by three distances. Scroll, and the ring grows — the nearer something is, the darker it's drawn.</p>
+        <div class="dblocks" id="dblocks">
+          <div class="dblock active">
+            <span class="label" style="color:var(--ink)">Here</span>
+            <p class="what">The room you're in — who's open, what's been written here, what this place is like right now.</p>
+            <span class="means">you could walk over right now</span>
+          </div>
+          <div class="dblock">
+            <span class="label" style="color:var(--ink)">Around</span>
+            <p class="what">The next few streets — other places, the people in them, what's happening tonight.</p>
+            <span class="means">you could be there in five minutes</span>
+          </div>
+          <div class="dblock">
+            <span class="label" style="color:var(--ink)">Near</span>
+            <p class="what">The neighbourhood — quieter, wider, more about what's around than who's around. Events this week, places worth knowing.</p>
+            <span class="means">it's part of where you live</span>
+          </div>
+        </div>
+      </div>
+
+      <svg class="map scenemap" viewBox="0 0 800 800" role="img" aria-label="The same hand-drawn map with a growing circle around you. As the ring widens from Here to Around to Near, more places, people and events appear, each drawn fainter the farther away it is.">
+        <defs>
+          <radialGradient id="scenegrad" gradientUnits="userSpaceOnUse" cx="400" cy="410" r="300">
+            <stop offset="0" stop-color="#fff"/>
+            <stop offset=".55" stop-color="#fff"/>
+            <stop offset=".84" stop-color="#fff" stop-opacity=".3"/>
+            <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+          </radialGradient>
+          <mask id="ring2"><rect width="800" height="800" fill="url(#scenegrad)"/></mask>
+        </defs>
+        <g mask="url(#ring2)" stroke-linecap="round">
+          <g fill="none" stroke="var(--ink)" stroke-opacity=".14" stroke-width="1">
+            <path d="M-20 268 C 150 252, 380 290, 820 244"/>
+            <path d="M-20 538 C 210 514, 540 560, 820 518"/>
+            <path d="M196 -20 C 210 230, 178 520, 212 820"/>
+            <path d="M466 -20 C 450 250, 482 550, 460 820"/>
+            <path d="M660 -20 C 645 260, 680 540, 658 820"/>
+            <path d="M-20 398 C 230 382, 520 412, 820 378"/>
+            <path d="M-20 698 C 260 608, 540 494, 820 422"/>
+            <path d="M60 -20 C 82 200, 42 520, 72 820"/>
+            <path d="M-20 130 C 180 142, 420 118, 820 148"/>
+          </g>
+          <g fill="none" stroke="var(--ink)" stroke-opacity=".07" stroke-width="1">
+            <path d="M-12 722 C 62 712, 128 726, 200 716"/>
+            <path d="M-20 748 C 78 736, 148 754, 240 740"/>
+            <path d="M-20 774 C 88 762, 158 780, 250 768"/>
+          </g>
+
+          <g class="mk" data-d="0">
+            <g stroke="var(--ink)" stroke-opacity=".9" fill="none" stroke-width="1.1">
+              <rect x="395" y="405" width="10" height="10"/>
+              <circle cx="400" cy="410" r="13"/>
+              <circle cx="400" cy="410" r="17.5"/>
+            </g>
+            <circle class="breath" cx="400" cy="410" r="30" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+            <circle cx="400" cy="410" r="5.5" fill="var(--ink)"/>
+          </g>
+
+          <g class="mk" data-d="146" stroke="var(--ink)" stroke-opacity=".48" fill="none" stroke-width="1">
+            <rect x="517" y="325" width="10" height="10"/>
+            <circle cx="522" cy="330" r="10"/>
+          </g>
+          <g class="mk" data-d="195">
+            <g stroke="var(--ink)" stroke-opacity=".48" fill="none" stroke-width="1">
+              <rect x="555" y="517" width="10" height="10"/>
+            </g>
+            <circle cx="567.5" cy="514.5" r="1.6" fill="var(--ink)" fill-opacity=".4"/>
+          </g>
+          <g class="mk" data-d="183">
+            <path d="M296 552 L303 560 L296 568 L289 560 Z" fill="none" stroke="var(--ink)" stroke-opacity=".48" stroke-width="1"/>
+            <text class="sys" x="296" y="586" text-anchor="middle" font-size="10" fill="var(--ink)" fill-opacity=".4">TONIGHT</text>
+          </g>
+
+          <g class="mk" data-d="254" stroke="var(--ink)" stroke-opacity=".28" fill="none" stroke-width="1">
+            <rect x="191" y="253" width="10" height="10"/>
+            <circle cx="196" cy="258" r="10"/>
+          </g>
+          <g class="mk" data-d="303">
+            <g stroke="var(--ink)" stroke-opacity=".28" fill="none" stroke-width="1">
+              <rect x="643" y="231" width="10" height="10"/>
+            </g>
+            <text class="sys" x="648" y="260" text-anchor="middle" font-size="10" fill="var(--ink)" fill-opacity=".28">1.1 KM</text>
+          </g>
+          <g class="mk" data-d="299" stroke="var(--ink)" stroke-opacity=".28" fill="none" stroke-width="1">
+            <rect x="161" y="591" width="10" height="10"/>
+          </g>
+          <g class="mk" data-d="345" stroke="var(--ink)" stroke-opacity=".14" fill="none" stroke-width="1">
+            <rect x="695" y="635" width="10" height="10"/>
+            <rect x="99" y="123" width="10" height="10"/>
+          </g>
+
+          <g stroke="var(--ink)" stroke-opacity=".28" fill="none" stroke-width=".75">
+            <circle id="rim" cx="400" cy="410" r="230"/>
+            <line x1="400" y1="296" x2="400" y2="304" />
+            <line x1="400" y1="176" x2="400" y2="184" />
+            <line x1="400" y1="56"  x2="400" y2="64"  />
+          </g>
+          <text class="sys" id="arclabel" x="400" y="166" text-anchor="middle" font-size="12" fill="var(--ink)" fill-opacity=".6">AROUND · 400 M</text>
+        </g>
+        <!-- cartographic furniture -->
+        <g>
+          <line x1="748" y1="72" x2="748" y2="42" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+          <path d="M744 48 L748 40 L752 48" fill="none" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+          <text class="sys" x="748" y="32" text-anchor="middle" font-size="11" fill="var(--ink)" fill-opacity=".48">N</text>
+          <line x1="626" y1="758" x2="726" y2="758" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+          <line x1="626" y1="754" x2="626" y2="762" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+          <line x1="726" y1="754" x2="726" y2="762" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+          <text class="sys" x="676" y="776" text-anchor="middle" font-size="10" fill="var(--ink)" fill-opacity=".28">200 M</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <p class="keeps wrap" data-reveal>If Here is empty, Around isn't. The map keeps going.</p>
+
+  <section class="section wave wrap" style="padding-top:0">
+    <div class="rule" data-reveal></div>
+    <span class="label" data-reveal style="display:block;margin-top:26px">The first move</span>
+    <h2 data-reveal>A wave says <em>I'd be up for meeting</em> — and costs almost nothing.</h2>
+    <div class="cols">
+      <div class="colstext">
+        <p data-reveal><span class="collabel label">Open</span>You're open unless you turn it off: people at the places near you can see you're at the café, and can wave. You wave back and a chat opens. If you don't, nothing happens — <em>and nobody is told.</em></p>
+        <p data-reveal style="--d:.12s"><span class="collabel label">Drawn, not tracked</span>People sit on venues, not points. near knows which café you're in and nothing finer than that — no precise positions, no paths, no "last seen". Off is one tap: you vanish from every map, nothing is kept.</p>
+      </div>
+      <div class="card" data-reveal style="--d:.2s" id="personcard">
+        <span class="label">A person card · sample</span>
+        <p class="card-name">Anna</p>
+        <p class="card-meta label">Café Oro · 80 m</p>
+        <p class="card-ints">film photography · running · old maps</p>
+        <div class="card-rule"></div>
+        <p class="card-now">reading by the window — happy to be interrupted</p>
+        <div class="card-actions">
+          <button class="wavebtn" type="button" id="wavebtn">Wave</button>
+          <button class="notnow" type="button" id="notnow">Not now</button>
+        </div>
+        <p class="card-note" id="cardnote" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <div class="rule" data-reveal></div>
+  <svg class="ornament" data-reveal width="150" height="16" viewBox="0 0 150 16" aria-hidden="true">
+    <circle cx="8" cy="8" r="3.5" fill="var(--ink)" fill-opacity=".8"/>
+    <circle cx="52" cy="8" r="5.5" fill="none" stroke="var(--ink)" stroke-opacity=".48" stroke-width="1"/>
+    <rect x="91" y="3" width="10" height="10" fill="none" stroke="var(--ink)" stroke-opacity=".28" stroke-width="1"/>
+    <path d="M140 2 L146 8 L140 14 L134 8 Z" fill="none" stroke="var(--ink)" stroke-opacity=".14" stroke-width="1"/>
+  </svg>
+  <p class="tagline" id="tagline"><span class="w" style="--i:0">Make</span> <span class="w" style="--i:1">meeting</span> <span class="w" style="--i:2">strangers</span> <span class="w" style="--i:3">less</span> <span class="w" style="--i:4">strange.</span></p>
+  <div class="end">
+    <span class="wordmark">near<span class="dot">.</span></span>
+    <span class="label">Paper, one ink, and everything fades</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    document.documentElement.classList.add('js');
+    var motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---- the wave: the fill drains, nobody is told ---- */
+    var waveBtn = document.getElementById('wavebtn');
+    var notNow = document.getElementById('notnow');
+    var note = document.getElementById('cardnote');
+    var card = document.getElementById('personcard');
+    waveBtn.addEventListener('click', function(){
+      if (waveBtn.disabled) return;
+      waveBtn.classList.add('sent');
+      waveBtn.textContent = 'Waved';
+      waveBtn.disabled = true;
+      notNow.disabled = true;
+      note.textContent = 'If Anna waves back, a chat opens. If she doesn’t, nothing happens — and nobody is told.';
+    });
+    notNow.addEventListener('click', function(){
+      if (notNow.disabled) return;
+      notNow.disabled = true;
+      waveBtn.disabled = true;
+      card.classList.add('dim');
+      note.textContent = 'Nothing happens, and she’s never told. Near never tells anyone you looked.';
+    });
+
+    if (!motionOK) return;
+
+    /* ---- scroll reveals ---- */
+    if ('IntersectionObserver' in window){
+      var els = document.querySelectorAll('[data-reveal]');
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold:.15, rootMargin:'0px 0px -6% 0px' });
+      els.forEach(function(el){
+        if (el.getBoundingClientRect().top > innerHeight * .92){
+          el.classList.add('pre');
+          io.observe(el);
+        } else {
+          el.classList.add('in');
+        }
+      });
+    }
+
+    /* ---- the field: pointer drift, scaled by depth ---- */
+    var field = document.getElementById('field');
+    if (matchMedia('(pointer: fine)').matches){
+      var hero = document.querySelector('.hero');
+      var tx = 0, ty = 0, cx = 0, cy = 0, drifting = false;
+      hero.addEventListener('pointermove', function(e){
+        tx = (e.clientX / innerWidth - .5) * -26;
+        ty = (e.clientY / innerHeight - .5) * -18;
+        if (!drifting){ drifting = true; requestAnimationFrame(drift); }
+      });
+      function drift(){
+        cx += (tx - cx) * .06;
+        cy += (ty - cy) * .06;
+        field.style.setProperty('--mx', cx.toFixed(2) + 'px');
+        field.style.setProperty('--my', cy.toFixed(2) + 'px');
+        if (Math.abs(tx - cx) + Math.abs(ty - cy) > .05){
+          requestAnimationFrame(drift);
+        } else {
+          drifting = false;
+        }
+      }
+    }
+
+    /* ---- the ring scene: scroll is the pinch ---- */
+    var scene = document.getElementById('ringscene');
+    var rim = document.getElementById('rim');
+    var grad = document.getElementById('scenegrad');
+    var arc = document.getElementById('arclabel');
+    var marks = scene.querySelectorAll('.mk');
+    var blocks = document.getElementById('dblocks').children;
+    var tagline = document.getElementById('tagline');
+    var ARCS = ['HERE · CAFÉ ORO', 'AROUND · 400 M', 'NEAR · JORDAAN'];
+    var R_MIN = 110, R_MAX = 360;
+
+    function easeInOut(t){ return t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2; }
+    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+    function updateField(){
+      field.style.setProperty('--sy', clamp(scrollY, 0, 900).toFixed(0) + 'px');
+    }
+
+    function updateRing(){
+      var rect = scene.getBoundingClientRect();
+      var vh = innerHeight;
+      var span = rect.height - vh;
+      var p = span > 0 ? clamp(-rect.top / span, 0, 1) : .5;
+      var R = R_MIN + (R_MAX - R_MIN) * easeInOut(p);
+
+      rim.setAttribute('r', R.toFixed(1));
+      grad.setAttribute('r', Math.max(R * 1.28, 190).toFixed(1));
+      arc.setAttribute('y', (410 - R - 14).toFixed(1));
+      var phase = Math.min(2, Math.floor(p * 3));
+      if (arc.textContent !== ARCS[phase]) arc.textContent = ARCS[phase];
+
+      for (var i = 0; i < marks.length; i++){
+        var d = +marks[i].getAttribute('data-d');
+        marks[i].style.opacity = clamp((R - d) / 55, 0, 1).toFixed(2);
+      }
+      for (var j = 0; j < blocks.length; j++){
+        blocks[j].classList.toggle('active', j === phase);
+      }
+    }
+
+    function updateTagline(){
+      var r = tagline.getBoundingClientRect();
+      var hl = clamp((innerHeight * .92 - r.top) / (innerHeight * .45), 0, 1);
+      tagline.style.setProperty('--hl', hl.toFixed(3));
+    }
+
+    var ticking = false;
+    function onScroll(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        updateField();
+        updateRing();
+        updateTagline();
+        ticking = false;
+      });
+    }
+    addEventListener('scroll', onScroll, { passive:true });
+    addEventListener('resize', onScroll);
+    updateField();
+    updateRing();
+    updateTagline();
+  })();
+</script>
