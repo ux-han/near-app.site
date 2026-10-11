@@ -504,6 +504,13 @@
     margin-top:clamp(48px,7vw,88px);
   }
   .footer .wordmark{ font-size:34px; }
+  .footer .endcol{ display:flex; flex-direction:column; gap:8px; text-align:right; }
+  .elink{ text-decoration:none; }
+  .elink:hover, .elink:focus-visible{ color:var(--ink); }
+  a:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+  @media (max-width:760px){
+    .footer .endcol{ text-align:left; }
+  }
 
   /* ---- scroll reveals ---- */
   .pre{ opacity:0; transform:translateY(.5em); }
@@ -966,7 +973,10 @@
   <p class="tagline" id="tagline"><span class="w" style="--i:0">Make</span> <span class="w" style="--i:1">meeting</span> <span class="w" style="--i:2">strangers</span> <span class="w" style="--i:3">less</span> <span class="w" style="--i:4">strange.</span></p>
   <div class="end">
     <span class="wordmark">near<span class="dot">.</span></span>
-    <span class="label">Paper, one ink, and everything fades</span>
+    <div class="endcol">
+      <a class="label elink" href="mailto:hello@nearsociable.com">hello@nearsociable.com</a>
+      <span class="label">Paper, one ink, and everything fades</span>
+    </div>
   </div>
 </footer>
 
